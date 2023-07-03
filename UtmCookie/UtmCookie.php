@@ -109,11 +109,15 @@ class UtmCookie
 
         $this->initStaticValues();
         // utm from _COOKIE
-        $utmCookieFilter = filter_var(
-            $this->utmCookieName ? json_decode(filter_input(INPUT_COOKIE, $this->utmCookieName), true) : [],
-            FILTER_UNSAFE_RAW,
-            FILTER_REQUIRE_ARRAY
-        );
+        $utmCookieFilter = filter_input(INPUT_COOKIE, $this->utmCookieName);
+
+        if($utmCookieFilter){
+            $utmCookieFilter = filter_var(
+             json_decode($utmCookieFilter, true),
+                FILTER_UNSAFE_RAW,
+                FILTER_REQUIRE_ARRAY
+            );
+        }
         if (false === is_array($utmCookieFilter)) {
             $utmCookieFilter = [];
         }
